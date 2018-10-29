@@ -1,6 +1,6 @@
 ### Marjolen Droog
 ### October 29th, 2018
-### This script is a pipeline for Single Cell RNA seq data   
+### This script is a pipeline for Single Cell RNA seq data (following CEL-Seq2 protocol) 
 
 # Load required packages
 library(data.table)
@@ -12,12 +12,12 @@ merged.plates <- function (x){
 merged_list <- lapply(filenames <- list.files(paste("./01. Transcript Counts/", x, sep = ""), 
                                     pattern = "tsv", 
                                     full.names = TRUE), fread)
-#     Transform column names to match plate-position (384 wells plate contains rows A:P, and columns 1:24)   ###
+# Transform column names to match plate-position (384 wells plate contains rows A:P, and columns 1:24)   ###
 for(i in 1:length(filenames)){
   colnames(merged_list[[i]]) <- c("GeneID", paste(x, "_plate_", i ,"_" , 
                                         paste(sort(rep((LETTERS)[1:16], 24)), 1:24, sep = ""),
                                         sep = ""))}
-#   For some data an additional space was added by the facility after every gene-name: "gene_name " 
+# For some data an additional space was added by the facility after every gene-name: "gene_name " 
 for(i in 1:length(filenames)){
   rownames(merged_list[[i]]) <- gsub(" ", "", row.names(merged_list[[i]]))}
 # Merge all plates into one dataframe
@@ -28,20 +28,17 @@ assign(x = paste("merged_file_", x , sep = ""),
        value = merged_file,
        envir = .GlobalEnv)}
 
-# for loop takes all folders into account
+# for loop takes create a dataframe per folder (containing all transcript counts of a condition)
 folders <- c(list.dirs(path = "./01. Transcript Counts", full.names = TRUE, recursive = F))
 for(i in 1:length(folders)){
   x = gsub('./01. Transcript Counts/','',folders[i])
   merged.plates(x)}
-# Clear global environment from anything that isn't a dataframe
-rm(x, i, merged.plates)
+
 # merge all dataframes together
 merged_file <- lapply(ls(, pattern = "merged_file_"), get) %>%
   reduce(full_join, by = "GeneID") %>% 
   column_to_rownames(var="GeneID") %>%
   replace(is.na(.), 0)
-# Clear global environment from all dataframes except the merged dataframe
-rm(list = ls(, pattern = "merged_file_"))
 
 # create a folder to store output files 
 if (!dir.exists(file.path("./output"))){dir.create(file.path("./output"))}
@@ -50,8 +47,8 @@ if (!dir.exists(file.path("./output"))){dir.create(file.path("./output"))}
 input <- merged_file[!grepl("ERCC", row.names(merged_file))&!grepl("__chrM", row.names(merged_file))&!grepl("Rn45s", row.names(merged_file)),]
 write_rds(x = input, path = paste("./output/", "input_", paste(gsub('./01. Transcript Counts/','',folders[1:length(folders)]), collapse = "_"), ".rds", sep =""))
 
+#Initiate RaceID 
 source("01. RaceID3_StemID2.R") # Don't source before you merged all the plates!
-#Initiate RaceID            
 sc <- SCseq(input)
 sc <- filterdata(sc, mintotal=1000, minexpr=5, minnumber=1, maxexpr=Inf, downsample=T, dsn=1, rseed=17000)
 sc <- clustexp(sc,clustnr=30,bootnr=50,metric="pearson",do.gap=FALSE,sat=TRUE,SE.method="Tibs2001SEmax",SE.factor=.25,B.gap=50,cln=0,rseed=17000,FUNcluster="kmedoids")
@@ -59,7 +56,7 @@ sc <- comptsne(sc, rseed=15555)
 sc <- findoutliers(sc, outminc=5,outlg=4,probthr=1e-15,thr=2**-(1:40),outdistquant=.95)
 write_rds(x = sc, path = paste("./output/", "sc_", paste(gsub('./01. Transcript Counts/','',folders[1:length(folders)]), collapse = "_"), ".rds", sep =""))
 
-## functions showing expression of gene of interest in t-SNE map on a log scale
+## Functions showing expression of gene of interest in t-SNE map on a log scale
 hlgene_log<- function(gene){
   g<-rownames(sc@ndata)[grep(gene, rownames(sc@ndata))]
   if ( length(g) == 1 ){
@@ -75,7 +72,7 @@ for(i in 1:nrow(vector_marker2)){
   dev.off()}},
 error=function(i){return(NA)})
 
-# Show in an excel files the parameter settings that were used per analysis
+# Parameter settings that were used per analysis
 fpar <- data.frame(parameter = names(sc@filterpar[-c(8,9)]), #these are the filter settings
                    setting = c(sc@filterpar[[1]], 
                                sc@filterpar[[2]], 
@@ -104,9 +101,8 @@ par_list <- list(filter = fpar, clusters = cpar, outlier = sc@outlierpar)
              header = TRUE, 
              row.names = TRUE)}
   
-# Write the cell cluster size per analysis in an excel file
+# Cell cluster size 
 cell_clusters <- data.frame(CELLID=names(sc@cpart),cluster=sc@cpart)
-# cells per cluster    #
 cell_cluster_size <- data.frame(table(cell_clusters$cluster))                               
 colnames(cell_cluster_size) <- c("cluster.nr", "nr._of_cells")
 write.xlsx(cell_cluster_size, 
@@ -114,11 +110,9 @@ write.xlsx(cell_cluster_size,
            header = FALSE, 
            row.names = TRUE)
 
-# Write clusters of each condition in an excell file into correspoding folders
+# Clusters that correspond to t-SNE map and Heatmap from RACEid3_StEMid2
 cell_clusters <- data.frame(CELLID=names(sc@cpart),cluster=sc@cpart)
-cdiff <- clustdiffgenes(sc,pvalue=1)
-# output:  ordered according to fold increase
-cdiff <- lapply(cdiff, function(x) {z <- x[order(x[,3], decreasing = TRUE), ]})
+cdiff <- lapply(clustdiffgenes(sc,pvalue=1), function(x) {z <- x[order(x[,3], decreasing = TRUE), ]})
 write.xlsx(cdiff, 
            file = paste("./output/", "/clusters", ".xlsx", sep = ""), 
            header = FALSE, 
@@ -142,7 +136,7 @@ pdf(paste("./output/", "00. clusters_", ".pdf", sep = ""))
 plottsne(sc,final=TRUE)
 dev.off()
 
-# Create ggplot with Cell's origin: Prepare a dataframe to be used in ggplot
+# ggplot with Cell's origin: Prepare a dataframe to be used in ggplot
 tsnecord <- cbind(sc@tsne, CELLID= rownames(sc@tsne))
 tsnecord2  <- separate(data = tsnecord, col = "CELLID", into = c("condition"), sep = "_")
 # create ggplot
