@@ -1,0 +1,22 @@
+install.packages(c("tsne", 
+                   "pheatmap", 
+                   "MASS", 
+                   "cluster", 
+                   "mclust", 
+                   "flexmix", 
+                   "lattice", 
+                   "fpc", 
+                   "RColorBrewer", 
+                   "permute", 
+                   "amap", 
+                   "locfit", 
+                   "vegan", 
+                   "Rtsne", 
+                   "scran",
+                   "randomForest",
+                   "rgl"))
+
+source("https://bioconductor.org/biocLite.R") 
+biocLite("scran")
+biocLite("DESeq2")
+biocLite("biomaRt")
