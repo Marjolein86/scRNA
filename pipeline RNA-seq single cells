@@ -1,6 +1,6 @@
 ### Marjolen Droog
 ### October 29th, 2018
-### This script 
+### This script is a pipeline for Single Cell RNA seq data   
 
 # Load required packages
 library(data.table)
