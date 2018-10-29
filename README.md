@@ -8,4 +8,6 @@ In the working directory there should be the R-project file, a csv file with a l
 The required packages can be found in the script '00. Packages for pipeline".  
 
 3.  
-In order for the pipeline to work, you will also need to source RacdeID3_StemID2 which is created by Dominik Grun.  
+In order for the pipeline to work, you will also need to source RacdeID3_StemID2 which is created by Dominik Grun:
+https://github.com/dgrun/RaceID3_StemID2
+
