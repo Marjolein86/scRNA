@@ -7,7 +7,7 @@ library(data.table)
 library(tidyverse)
 
 # Function: merge single cell RNA transcript files derived from 384-wells plate into dataframe according to condition
-# x = the name of a file in the directory in which the transcripts-Count-files are stored
+# x = the name of a folder in the directory in which the transcripts-Count-files are stored
 merged.plates <- function (x){
 #  Read all input files from specified folder into a list
 merged_list <- lapply(filenames <- list.files(paste("./01. Transcript Counts/", x, sep = ""), 
