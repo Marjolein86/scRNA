@@ -9,7 +9,7 @@ library(tidyverse)
 # Function: merge single cell RNA transcript files derived from 384-wells plate into dataframe according to condition
 # x = the name of a folder in the directory in which the transcripts-Count-files are stored
 merged.plates <- function (x){
-#  Read all input files from specified folder into a list
+#  Read all input files from specified folder (x) into a list
 merged_list <- lapply(filenames <- list.files(paste("./01. Transcript Counts/", x, sep = ""), 
                                     pattern = "tsv", 
                                     full.names = TRUE), fread)
