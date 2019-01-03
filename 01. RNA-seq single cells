@@ -64,7 +64,7 @@ hlgene_log<- function(gene){
     plotexptsne(sc, g, n = gene, logsc=T)
   } else { print ("check your gene name")}}
 
-vector_marker2 <- fread("Genes2.csv")
+vector_marker2 <- fread("Genes.csv")
 tryCatch({ 
 for(i in 1:nrow(vector_marker2)){
   x <- paste(i, ". ", vector_marker2[i,2], ". ", vector_marker2[i,1], sep = "")
