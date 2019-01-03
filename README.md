@@ -1,12 +1,15 @@
 # scRNA
 These scripts to analyze single cell RNA-seq (following CEL-Seq2 protocol) data require the following:
 
+
 1.  
 The required packages to run these scripts can be found in the script '00. Required packages".  
 
+
 2.  
-In order for the pipeline to work, you will also need to source RacdeID3_StemID2 which is created by Dominik Grun:
+In order for the pipeline to work, you will also need to source RacdeID3_StemID2, created by Dominik Grun:
 https://github.com/dgrun/RaceID3_StemID2
+
 
 3.  
 In the working directory there should be:
@@ -43,6 +46,14 @@ In the working directory there should be:
   - This script compares two conditions
   - Continues upon the analysis from '01.' and is only usuable if two conditions were used in '01. RNA-seq single cells' 
     - For example,  a treatment versus a control 
+    - After the script '01. RNA-seq single cells' is done, it has produced a file named 'clusters.xlsx'.
+      - Analyze clusters to identify cell-types
+      - Create a .csv file names 'clusters.csv' and place it in the working directory 
+        - 'clusters.csv' should contain: 
+          - in column A: per row a celltype abbreviation
+          - specify which cluster (should be a number) belongs to which cell-type: 
+            - Each following column should contain only one cluster-number
+        
   - Per cell type, the script in '02.' will create similar plots and files as '01. RNA-seq single cells'. 
   - In  addition, this script will produce:
     - a plot of differentially regulated genes (basemeans vs. fold change)
