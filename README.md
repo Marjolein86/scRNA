@@ -47,7 +47,7 @@ In the working directory there should be:
   - Continues upon the analysis from '01. RNA-seq single cells' and is only usuable if two conditions were used 
     - After the script '01. RNA-seq single cells' is done, it has produced a file named 'clusters.xlsx'.
       - Analyze these clusters to identify cell-types
-      - Create a .csv file names 'clusters.csv' and place it in the working directory 
+      - Create a .csv file named 'clusters.csv' and place it in the working directory 
         - 'clusters.csv' should contain: 
           - in column A: per row a celltype abbreviation
           - specify which cluster belongs to which cell-type: 
