@@ -16,8 +16,8 @@ In the working directory there should be:
 - the R-project file 
 
 - a csv file named 'Genes.csv':
-  - column A: A list of genes you wish to analyze
-  - column B: corresponding marker types of genes in column A
+  - column A: A list of genes (cell type markers) you wish to analyze
+  - column B: corresponding cell-types that correspond to genes column A
   
 - A folder named ‘01. Transcript Counts’: 
   - In this folder you will place one folder per condition 
