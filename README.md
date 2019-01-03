@@ -30,6 +30,7 @@ In the working directory there should be:
       - Outlier plot
       - Saturation plot
     - tsne plots of genes specified in Genes.csv
+    - tnse plot of cell, color-coded according to their origin/treatment
     - excel file with differentially regulated genes per cluster
     - excel file with number of cells per cluster
     - excel file with the filter parameters
