@@ -50,11 +50,11 @@ In the working directory there should be:
       - Create a .csv file names 'clusters.csv' and place it in the working directory 
         - 'clusters.csv' should contain: 
           - in column A: per row a celltype abbreviation
-          - specify which cluster (should be just a number) belongs to which cell-type: 
+          - specify which cluster belongs to which cell-type: 
             - Each column after A should contain only one cluster-number per column
         
   - The script '02. Differential gene expression' creates an 'Ouput2' folder:
-    - in this folder there will be other folders created, names after each cell type provided in 'clusters.csv'. 
+    - in this folder there will be other folders created, named after each cell type provided in 'clusters.csv'. 
       - Per cell type - folder: 
         - similar plots and files as '01. RNA-seq single cells'. 
         - In  addition, this script will produce:
