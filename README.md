@@ -11,3 +11,6 @@ The required packages can be found in the script '00. Packages for pipeline".
 In order for the pipeline to work, you will also need to source RacdeID3_StemID2 which is created by Dominik Grun:
 https://github.com/dgrun/RaceID3_StemID2
 
+4.
+For the file '01.' numerous treatments can be added. File '02.' will continue upon the analysis from '01.' and is only usuable if two conditions are being compared (for example, a treatment versus a control). The script in '02.' will create similar plots and files as '01.'. In addition, it will produce a plot and an excel file with the foldchange of the treatment compared to the control. 
+
