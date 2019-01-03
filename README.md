@@ -44,7 +44,7 @@ In the working directory there should be:
 4. 
 - The script in '02. Differential gene expression':
   - This script compares two conditions
-  - Continues upon the analysis from '01.' and is only usuable if two conditions were used in '01. RNA-seq single cells' 
+  - Continues upon the analysis from '01. RNA-seq single cells' and is only usuable if two conditions were used 
     - For example,  a treatment versus a control 
     - After the script '01. RNA-seq single cells' is done, it has produced a file named 'clusters.xlsx'.
       - Analyze clusters to identify cell-types
